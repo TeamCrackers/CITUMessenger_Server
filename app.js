@@ -15,6 +15,7 @@ var MongoServer = mongodb.Server;
 var client = new MongoClient(new MongoServer('localhost',27017));
 var database = null;
 var userCollection = null;
+
 client.connect("mongodb://localhost:27017/CITUMessenger", function(err, db) {
   if(!err) {
     console.log("We are connected");
@@ -30,8 +31,14 @@ app.get('/', function(req, res){
 
 // Initialize Connection
 io.on('connection', function(socket){
+  console.log("A user has connected");
   socket.on('chat message', function(data){
-    io.emit('chat message', data.name + ":       "+data.message);
+    //io.emit('new message', data.sender + ":       "+data.message);
+    io.emit('new message',data);
+    console.log(data);
+  });
+  socket.on("disconnect",function(){
+    console.log("A user has disconnected.");
   });
 });
 
