@@ -1,12 +1,16 @@
-exports.UserController = function(jsonParser,userCollection){
+exports.UserController = function(jsonParser,mongoose,schema){
+	var service = require('../Service/UserService.js').UserService(mongoose);
 	var UserController  = require('express').Router();
 	UserController.post('/login',jsonParser,function(req,res){
+		res.json(req.body);
 		
-		res.send("naabot:LOGIN");
 	});
 	UserController.post('/register',jsonParser,function(req,res){
-		
-		res.send("naabot:REGISTER");
+		service.register(req.body.firstName,
+						req.body.lastName,
+						req.body.course,
+						req.body.nickName);
+		res.json(true);
 	});
 	return UserController;
 }
