@@ -1,7 +1,8 @@
-exports.UserController = function(jsonParser,mongoose,schema){
+exports.UserController = function(jsonParser,mongoose){
 	var service = require('../Service/UserService.js').UserService(mongoose);
 	var UserController  = require('express').Router();
 	UserController.post('/login',jsonParser,function(req,res){
+
 		res.json(req.body);
 		
 	});
