@@ -1,32 +1,54 @@
 <!doctype html>
-<html>
+<html ng-app="CITUMessengerTEST">
   <head>
     <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
+    
   </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input type="text" id="name">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+  <body ng-controller="chat">
+
+    <input type="text" ng-model="userid" placeholder="username">
+    <button ng-click="connect()">Connect</button>
+    <div >
+      <ul id="messages"></ul>
+      <form action="">
+        <input type="text" id="name">
+        <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
   </body>
 </html>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
 <script>
-  	var socket = io();
-    socket.emit('set name', "ian osias");
-    socket.on("online users update",function(data){
-      console.log(data);
+    var app = angular.module('CITUMessengerTEST',[]);
+    app.controller("chat",function($scope){
+      var socket;
+      $scope.userid = "";
+      $scope.connected = false;
+
+      $scope.connect = function(){
+        if($scope.userid.length == 0){
+            alert("invalid userid");
+        }
+        else{
+          socket = io();
+          socket.on('connect',function(){
+            socket.emit('userid', $scope.userid);
+            $scope.connected = true;
+            alert("Connected as "+$scope.userid);
+          });
+          socket.on("online users update",function(data){
+            console.log(data);
+          });
+          socket.on('disconnected',function(){
+            socket.emit("removeFromOnline",userid);
+            
+          });
+        }
+      }
+
     });
+
+  	
 </script>
