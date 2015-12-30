@@ -11,8 +11,8 @@
     <div >
       <ul id="messages"></ul>
       <form action="">
-        <input type="text" id="name">
-        <input id="m" autocomplete="off" /><button>Send</button>
+        <input type="text" id="name" ng-model="message">
+        <input id="m" autocomplete="off" /><button ng-click="sendMessage()">Send</button>
       </form>
     </div>
   </body>
@@ -25,6 +25,7 @@
     app.controller("chat",function($scope){
       var socket;
       $scope.userid = "";
+      $scope.message = "";
       $scope.connected = false;
 
       $scope.connect = function(){
@@ -43,9 +44,14 @@
           });
           socket.on('disconnected',function(){
             socket.emit("removeFromOnline",userid);
-            
+
           });
         }
+      }
+
+      $scope.sendMessage = function(){
+          var mess = $scope.message;
+          socket.emit('new message',mess);
       }
 
     });
