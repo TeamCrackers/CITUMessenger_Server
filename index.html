@@ -8,6 +8,11 @@
 
     <input type="text" ng-model="userid" placeholder="username">
     <button ng-click="connect()">Connect</button>
+    Online Users:<br>
+    <ul ng-repeat="user in onlineUsers">
+      <li>{{user.username}}</li>
+    </ul>
+    <h3>General Chat</h3>
     <div >
       <ul id="messages"></ul>
       <form action="">
@@ -15,6 +20,15 @@
         <input id="m" autocomplete="off" /><button ng-click="sendMessage()">Send</button>
       </form>
     </div>
+    <hr>
+    <div>
+      <h3>Join a room</h3>
+      <input type="text" ng-model="roomName">
+      <button ng-click="joinRoom(roomName)">JOIN</button>
+      <input type="text" ng-model="roomMessage">
+      <button ng-click="sendMessage(roomName,roomMessage)">Send Message</button>
+    </div>
+    
   </body>
 </html>
 <script src="/socket.io/socket.io.js"></script>
@@ -27,7 +41,7 @@
       $scope.userid = "";
       $scope.message = "";
       $scope.connected = false;
-
+      $scope.onlineUsers = ['Hello'];
       $scope.connect = function(){
         if($scope.userid.length == 0){
             alert("invalid userid");
@@ -40,18 +54,25 @@
             alert("Connected as "+$scope.userid);
           });
           socket.on("online users update",function(data){
-            console.log(data);
+            $scope.onlineUsers = data;
           });
           socket.on('disconnected',function(){
             socket.emit("removeFromOnline",userid);
+          });
+
+          socket.on("receive message",function (data){
+              alert(data.roomid + " "+ data.message);
 
           });
         }
       }
 
-      $scope.sendMessage = function(){
-          var mess = $scope.message;
-          socket.emit('new message',mess);
+      $scope.joinRoom = function(id){
+          socket.emit('join room',id);
+      }
+
+      $scope.sendMessage = function(roomName,roomMessage){
+          socket.emit('send message',{ roomid:roomName,message:roomMessage}); 
       }
 
     });

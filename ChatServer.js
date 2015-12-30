@@ -5,6 +5,7 @@ exports.initializeChatServer = function(http){
 	var server = {
 		io: null,
 		users: [],
+		usersMeta:[],
 		rooms:[],
 		
 	};
@@ -15,20 +16,49 @@ exports.initializeChatServer = function(http){
 				user : {},
 				socket: {}
 			};
-		client.on('userid',function(data){
+		client.on('userid',function (data){
 			object.user = data;
 			object.socket = client;
 			server.users.push(object);
-			console.log(server.users.length);
-			console.log(server.users);
+			server.usersMeta.push({
+				username: data,
+				socketId : client.id
+			});
+			console.log("# of Online Users:"+server.usersMeta.length);
+			client.emit("online users update",server.usersMeta);
+			// TODO:Connect to rooms associated with the user
 		});
 		client.on("disconnect",function(){
 			var index = server.users.indexOf(object);
 			if(index>-1){
 				server.users.splice(index,1);
+				server.usersMeta.splice(index,1);
 			}
 			console.log(object.user+" has disconnected");
-			console.log(server.users.length);
+			console.log("# of Online Users:"+server.usersMeta.length);
+			client.emit("online users update",server.usersMeta);
+		});
+
+		client.on("join room",function (data){
+			client.join(data); // Automatically Create a room if not available
+			console.log(object.user+" joined room", data);
+			console.log(client.rooms);
+		});
+
+		client.on("send message",function (data){
+			var roomid = data.roomid;
+			var message = data.message;
+			console.log(object.user+"sent: "+roomid+" "+message);
+			client.to(roomid).emit("receive message",data);
+		});
+
+		client.on("request user to join room",function (data){
+			var userid = data.user;
+			var roomid = data.room;
+		});
+
+		client.on("leave room",function (data){
+
 		});
 
 	});
