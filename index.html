@@ -25,6 +25,12 @@
       <h3>Join a room</h3>
       <input type="text" ng-model="roomName">
       <button ng-click="joinRoom(roomName)">JOIN</button>
+      <button ng-click="leaveRoom(roomName)">Leave</button>
+      <br>
+      <h3> Request User to Join Room </h3>
+      <input type="text" ng-model="RequestUser">
+      <button ng-click="requestJoinRoom(RequestUser,roomName)">JOIN</button>
+
       <input type="text" ng-model="roomMessage">
       <button ng-click="sendMessage(roomName,roomMessage)">Send Message</button>
     </div>
@@ -71,8 +77,17 @@
           socket.emit('join room',id);
       }
 
+      $scope.leaveRoom = function(id){
+          socket.emit('leave room',id);
+      }
+
       $scope.sendMessage = function(roomName,roomMessage){
           socket.emit('send message',{ roomid:roomName,message:roomMessage}); 
+      }
+
+      $scope.requestJoinRoom = function(RequestUser,roomName){
+          socket.emit('request user to join room',{ user:RequestUser,room:roomName}); 
+
       }
 
     });
