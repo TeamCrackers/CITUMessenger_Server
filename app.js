@@ -10,14 +10,14 @@ var mongoose = require('mongoose');
 
 app.use(express.static('public'));
 
-//mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/test');
 
 
 
-//var userController = require("./Controllers/UserController.js").UserController(jsonParser,mongoose);
+var userController = require("./Controllers/UserController.js").UserController(jsonParser,mongoose);
 
 
-//app.use('/user',userController);   // Use UserController
+app.use('/user',userController);   // Use UserController
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
