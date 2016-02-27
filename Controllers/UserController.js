@@ -23,6 +23,10 @@ exports.UserController = function(jsonParser,mongoose){
     UserController.post('/isFriend',jsonParser,function (request,response) {
         service.isFriend(request.body.user1,request.body.user2,response)
     });
+    UserController.get('/:user', function (request,response) {
+       var schoolId = request.params.user;
+       service.getUser(schoolId,response); 
+    });
 	
 	return UserController;
 }

@@ -86,6 +86,13 @@ exports.UserService = function(mongoose){
                             }
                 response.json(found);
             });
+        },
+        getUser: function(schoolId,response){
+            var userModel = this.UserModel;
+            var query = userModel.findOne({"schoolId":schoolId});
+             query.exec(function(err,user){
+                 response.json(user);
+             });
         }
 	};
 	return service;

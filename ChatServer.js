@@ -26,7 +26,6 @@ exports.initializeChatServer = function(http){
 			});
 			console.log("# of Online Users:"+server.usersMeta.length);
 			client.emit("online users update",server.usersMeta);
-			// TODO:Connect to rooms associated with the user
 		});
 		client.on("disconnect",function(){
 			var index = server.users.indexOf(object);
