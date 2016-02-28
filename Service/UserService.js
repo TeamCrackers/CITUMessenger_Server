@@ -93,6 +93,29 @@ exports.UserService = function(mongoose){
              query.exec(function(err,user){
                  response.json(user);
              });
+        },
+        updateUser : function(user,response){
+            var userModel = this.UserModel;
+            var query = userModel.findOne({"schoolId":user.schoolId});
+             query.exec(function(err,userModel){
+                 var resp = response;
+                 userModel.schoolId = user.schoolId;
+                 userModel.password = user.password;
+                 userModel.firstName = user.firstName;
+                 userModel.lastName = user.lastName;
+                 userModel.course = user.course;
+                 userModel.nickName = user.nickName;
+                 userModel.friends = user.friends;
+                 userModel.conversations = user.conversations;
+                 userModel.save(function(err){
+                    var response = true;
+                    if(err){
+                        console.log("Register Error");
+                        response = false;    
+                    }
+                    resp.json(response);
+			     });
+             });
         }
 	};
 	return service;

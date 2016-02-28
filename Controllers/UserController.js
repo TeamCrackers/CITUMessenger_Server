@@ -27,6 +27,9 @@ exports.UserController = function(jsonParser,mongoose){
        var schoolId = request.params.user;
        service.getUser(schoolId,response); 
     });
+    UserController.put('/', jsonParser,function (request,response) {
+       service.updateUser(request.body,response); 
+    });
 	
 	return UserController;
 }

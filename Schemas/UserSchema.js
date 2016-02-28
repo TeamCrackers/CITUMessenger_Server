@@ -7,6 +7,7 @@ exports.UserSchema = function(){
 				course: String,
 				nickName: String,
 				friends : [],
+                conversations:[],
 				online: Boolean
 				});
 	return schema;
