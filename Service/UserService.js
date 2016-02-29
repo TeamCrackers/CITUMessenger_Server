@@ -38,13 +38,14 @@ exports.UserService = function(mongoose){
 			
 			
 		},
-		register : function(schoolId,firstname,lastname,course,nickname,password){
+		register : function(schoolId,firstname,lastname,course,nickname,password,email){
             var user = new this.UserModel();
 			user.schoolId = schoolId;
 			user.firstName = firstname;
 			user.lastName = lastname;
 			user.course = course;
 			user.nickName = nickname;
+            user.email = email;
 			user.password = password;
 			user.save(function(err){
 				if(err){

@@ -15,9 +15,10 @@ mongoose.connect('mongodb://localhost/test');
 
 
 var userController = require("./Controllers/UserController.js").UserController(jsonParser,mongoose);
-
+var conversationController = require("./Controllers/ConversationController.js").ConversationController(jsonParser,mongoose);
 
 app.use('/user',userController);   // Use UserController
+app.use('/conversation',conversationController);   // Use ConversationController
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });

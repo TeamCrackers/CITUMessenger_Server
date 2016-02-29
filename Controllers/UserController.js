@@ -14,7 +14,8 @@ exports.UserController = function(jsonParser,mongoose){
 						req.body.lastName,
 						req.body.course,
 						req.body.nickName,
-						req.body.password)
+						req.body.password,
+                        req.body.email)
 		);
     });
     UserController.post('/addFriend',jsonParser,function (request,response) {

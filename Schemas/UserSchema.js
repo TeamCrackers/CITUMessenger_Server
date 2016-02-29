@@ -4,11 +4,11 @@ exports.UserSchema = function(){
 				password: String,
 				firstName: String,
 				lastName: String,
+                email:String,
 				course: String,
 				nickName: String,
 				friends : [],
-                conversations:[],
-				online: Boolean
+                online: Boolean
 				});
 	return schema;
 }
