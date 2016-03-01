@@ -60,9 +60,25 @@ exports.UserService = function (mongoose) {
                 response.json(responseData);
            });
         },
-        getAllConversationsOfUser : function(user,response){
+        getAllConversationsOfUser : function(userId,response){
             var requests = [];
-            response.json(requests);
+            var query = this.Model.find();
+            query.exec(function (err,conversations) {
+                var containsUser = function(users){
+                    for(var i=0;i<users.length;i++)
+                    {
+                        if(users[i].schoolId == userId)
+                            return true;
+                    }
+                    return false;
+                }
+                var resp_conversation = [];
+                for(var i=0;i<conversations.length;i++){
+                    if(containsUser(conversations[i].participants))
+                        resp_conversation.push(conversations[i]);
+                }
+                response.json(resp_conversation);
+            });
         },
         getAllRequests: function(user,response){
             var model = this.RequestModel;

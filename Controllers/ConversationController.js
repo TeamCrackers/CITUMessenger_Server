@@ -8,7 +8,7 @@ exports.ConversationController = function(jsonParser,mongoose){
        service.createConversation(request.body,response); 
     });
     ConversationController.put('/',jsonParser,function (request,response) {
-        service.updateConversation(request); 
+        service.updateConversation(request.body,response); 
     });
     ConversationController.get('/getAllConversation/:userid',function(request,response){
         service.getAllConversationsOfUser(request.params.userid,response);

@@ -45,7 +45,7 @@ exports.initializeChatServer = function(http){
 		});
 
 		client.on("send message",function (data){
-			var roomid = data.roomid;
+			var roomid = data.conversationId;
 			var message = data.message;
 			console.log(object.user+"sent: "+roomid+" "+message);
 			client.to(roomid).emit("receive message",data);
@@ -57,7 +57,7 @@ exports.initializeChatServer = function(http){
 		});
 
 		client.on("leave room",function (data){
-
+           client.leave(data);
 		});
 
 	});
